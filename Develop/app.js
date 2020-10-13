@@ -18,11 +18,11 @@ const render = require("./lib/htmlRenderer");
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
 
-After you have your html, you're now ready to create an HTML file using the HTML
-returned from the `render` function. Now write it to a file named `team.html` in the
-`output` folder. You can use the variable `outputPath` above target this location.
-Hint: you may need to check if the `output` folder exists and create it if it
-does not.
+// After you have your html, you're now ready to create an HTML file using the HTML
+// returned from the `render` function. Now write it to a file named `team.html` in the
+// `output` folder. You can use the variable `outputPath` above target this location.
+// Hint: you may need to check if the `output` folder exists and create it if it
+// does not.
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
@@ -68,7 +68,7 @@ function managerPrompt() {
         type: "input",
         name: "newmember",
         message: "What type of team member would you like to add?",
-        choices: ["Manager", "Engineer", "Intern", "None"]
+        choices: ["Engineer", "Intern", "None"]
         },
   ]);
 }
@@ -99,7 +99,7 @@ function engineerPrompt () {
             type: "list",
             name: "newmember",
             message: "What type of team member would you like to add?",
-            choices: ["Manager", "Engineer", "Intern", "None"]
+            choices: ["Engineer", "Intern", "None"]
         },
     ]);
 
@@ -131,67 +131,93 @@ function internPrompt () {
             type: "list",
             name: "newmember",
             message: "What type of team member would you like to add?",
-            choices: ["Manager", "Engineer", "Intern", "None"]
+            choices: ["Engineer", "Intern", "None"]
             },
         ]);
 
 }
 
 
-const employees = []
+const newEmployees = []
 
 
 
-
-function setManager(response){
-    const response = await managerPrompt();
-    employees.push(response.name);
-    employees.push(response.id);
-    employees.push(response.email);
-    employees.push(response.officeNumber);
+function setIntern(){
+    inquirer.prompt(internPrompt)
+    .then(function (response) {
+        const newIntern = new Intern(response.name, responseid, response.email, response.school);
+        newEmployees.push(newIntern)
+    })
     
-
-}
-
-function setEngineer(response){
-    const response = await managerPrompt();
-    employees.push(response.name);
-    employees.push(response.id);
-    employees.push(response.email);
-    employees.push(response.github);
-
-}
-
-function setManager(response){
-    const response = await managerPrompt();
-    employees.push(response.name);
-    employees.push(response.id);
-    employees.push(response.email);
-    employees.push(response.school);
-
-}
-
-
-function nextEmployee(response){
-    if (`${response.newmember}` === "Manager") {
-        managerPrompt();
+    if (`${response.newmember}` === "Engineer") {
+        setEngineer ();
     }
-    else if (`${response.newmember}` === "Engineer") {
-        engineerPrompt ();
-    }
+    
     else if (`${response.newmember}` === "Intern") {
-        internPrompt ();
+        setIntern ();
     }
-    else if (`${response.newmember}` === "None") {
-        render ();
+
+    else {
+        const output = render(employees);
+        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+            if (err) {
+              throw err;
+            }
+        })
     }
 }
 
 
-setIntern();
 
-setEngineer();
+function setEngineer(){
+    inquirer.prompt(engineerPrompt)
+    .then(function (response) {
+        const newEngineer = new Engineer(response.name, responseid, response.email, response.github);
+        newEmployees.push(newEngineer)
+    })
+    
+    if (`${response.newmember}` === "Engineer") {
+        setEngineer ();
+    }
+    
+    else if (`${response.newmember}` === "Intern") {
+        setIntern ();
+    }
 
-managerPrompt();
+    else {
+        const output = render(employees);
+        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+            if (err) {
+              throw err;
+            }
+        })
+    }
+}
 
-nextEmployee();
+
+function setManager(){
+    inquirer.prompt(managerPrompt)
+    .then(function (response) {
+        const newManager = new Manager(response.name, responseid, response.email, response.officeNumber);
+        newEmployees.push(newManager)
+    })
+    
+    if (`${response.newmember}` === "Engineer") {
+        setEngineer ();
+    }
+    
+    else if (`${response.newmember}` === "Intern") {
+        setIntern ();
+    }
+
+    else {
+        const output = render(employees);
+        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+            if (err) {
+              throw err;
+            }
+        })
+    }
+}
+
+setManager()
