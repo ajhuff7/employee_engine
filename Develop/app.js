@@ -37,7 +37,7 @@ const render = require("./lib/htmlRenderer");
 
 
 function managerPrompt() {
-    return inquirer.prompt([
+    inquirer.prompt([
         {
         type: "input",
         name: "name",
@@ -68,7 +68,7 @@ function managerPrompt() {
 }
 
 function engineerPrompt () {
-    return inquirer.prompt([
+    inquirer.prompt([
         {
             type: "input",
             name: "name",
@@ -100,7 +100,7 @@ function engineerPrompt () {
 }
 
 function internPrompt () {
-    return inquirer.prompt([
+    inquirer.prompt([
         {
             type: "input",
             name: "name",
@@ -165,6 +165,7 @@ function setIntern(){
 
 function setEngineer(){
     inquirer.prompt(engineerPrompt)
+
     .then(function (response) {
         const newEngineer = new Engineer(response.name, response.id, response.email, response.github);
         newEmployees.push(newEngineer)
@@ -192,9 +193,11 @@ function setEngineer(){
 function setManager(){
     inquirer.prompt(managerPrompt)
     console.log(managerPrompt)
+
     .then(function (response) {
         const newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
         newEmployees.push(newManager)
+        console.log(newManager)
     })
     
     if (`${response.newmember}` === "Engineer") {
