@@ -152,7 +152,7 @@ function setIntern(){
     }
 
     else {
-        const output = render(employees);
+        const output = render(newEmployees);
         fs.writeFile('./output/team.html', output, 'utf8', function(err) {
             if (err) 
               throw err;

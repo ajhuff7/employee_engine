@@ -1,6 +1,6 @@
 # employee_engine
 
-![emp1]()
+![emp1](Develop/assets/emp1.JPG)
 =======
 
 This Employee Engine allows user to create employee profiles directly in the terminal. It allows for different job types, and profile details based on user needs. 
@@ -30,8 +30,6 @@ This Employee Engine allows user to create employee profiles directly in the ter
 App accepts user input and creates employee profiles containing names, ID numbers, emails, and contact info. App utilizes node.js to build database directly in the terminal. Test cases are run with Jest to ensure correctly coded before deployed.
 
 ## Features
-
-![emp2]()
 
 =======
 
