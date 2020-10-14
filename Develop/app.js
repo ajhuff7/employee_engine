@@ -34,12 +34,6 @@ const render = require("./lib/htmlRenderer");
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
   
-const inquirer = require("inquirer");
-const fs = require("fs");
-const util = require("util");
-const Choices = require("inquirer/lib/objects/choices");
-
-// const writeFileAsync = util.promisify(fs.writeFile);
 
 
 function managerPrompt() {
@@ -65,7 +59,7 @@ function managerPrompt() {
         message: "What is your managers office number?"
         },
         {
-        type: "input",
+        type: "list",
         name: "newmember",
         message: "What type of team member would you like to add?",
         choices: ["Engineer", "Intern", "None"]
@@ -145,7 +139,7 @@ const newEmployees = []
 function setIntern(){
     inquirer.prompt(internPrompt)
     .then(function (response) {
-        const newIntern = new Intern(response.name, responseid, response.email, response.school);
+        const newIntern = new Intern(response.name, response.id, response.email, response.school);
         newEmployees.push(newIntern)
     })
     
@@ -159,7 +153,7 @@ function setIntern(){
 
     else {
         const output = render(employees);
-        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+        fs.writeFile('output/team.html', output, 'utf8', function(err) {
             if (err) {
               throw err;
             }
@@ -172,7 +166,7 @@ function setIntern(){
 function setEngineer(){
     inquirer.prompt(engineerPrompt)
     .then(function (response) {
-        const newEngineer = new Engineer(response.name, responseid, response.email, response.github);
+        const newEngineer = new Engineer(response.name, response.id, response.email, response.github);
         newEmployees.push(newEngineer)
     })
     
@@ -186,7 +180,7 @@ function setEngineer(){
 
     else {
         const output = render(employees);
-        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+        fs.writeFile('output/team.html', output, 'utf8', function(err) {
             if (err) {
               throw err;
             }
@@ -197,8 +191,9 @@ function setEngineer(){
 
 function setManager(){
     inquirer.prompt(managerPrompt)
+    console.log(managerPrompt)
     .then(function (response) {
-        const newManager = new Manager(response.name, responseid, response.email, response.officeNumber);
+        const newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
         newEmployees.push(newManager)
     })
     
@@ -211,13 +206,14 @@ function setManager(){
     }
 
     else {
-        const output = render(employees);
-        fs.writeFile('output/team.html', output, 'utf8')(function(err) {
+        const output = render(newEmployees);
+        fs.writeFile('output/team.html', output, 'utf8', function(err) {
             if (err) {
               throw err;
             }
         })
     }
 }
+
 
 setManager()
