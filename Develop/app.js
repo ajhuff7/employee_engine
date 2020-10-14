@@ -35,9 +35,9 @@ const render = require("./lib/htmlRenderer");
 // for the provided `render` function to work! ```
   
 
+function managerPrompt(){
+    return inquirer.prompt([
 
-function managerPrompt() {
-    inquirer.prompt([
         {
         type: "input",
         name: "name",
@@ -64,11 +64,13 @@ function managerPrompt() {
         message: "What type of team member would you like to add?",
         choices: ["Engineer", "Intern", "None"]
         },
-  ]);
+    ])
 }
 
-function engineerPrompt () {
-    inquirer.prompt([
+
+function engineerPrompt(){
+    return inquirer.prompt([
+
         {
             type: "input",
             name: "name",
@@ -95,12 +97,12 @@ function engineerPrompt () {
             message: "What type of team member would you like to add?",
             choices: ["Engineer", "Intern", "None"]
         },
-    ]);
-
+    ])
 }
 
-function internPrompt () {
-    inquirer.prompt([
+function internPrompt(){
+    return inquirer.prompt([
+
         {
             type: "input",
             name: "name",
@@ -127,9 +129,8 @@ function internPrompt () {
             message: "What type of team member would you like to add?",
             choices: ["Engineer", "Intern", "None"]
             },
-        ]);
-
-}
+        ])
+    }
 
 
 const newEmployees = []
@@ -137,85 +138,84 @@ const newEmployees = []
 
 
 function setIntern(){
-    inquirer.prompt(internPrompt)
-    .then(function (response) {
+    internPrompt().then(function (response) {
+
         const newIntern = new Intern(response.name, response.id, response.email, response.school);
         newEmployees.push(newIntern)
-    })
     
-    if (`${response.newmember}` === "Engineer") {
+    if (response.newmember === "Engineer") {
         setEngineer ();
     }
     
-    else if (`${response.newmember}` === "Intern") {
+    else if (response.newmember === "Intern") {
         setIntern ();
     }
 
     else {
         const output = render(employees);
-        fs.writeFile('output/team.html', output, 'utf8', function(err) {
-            if (err) {
+        fs.writeFile('./output/team.html', output, 'utf8', function(err) {
+            if (err) 
               throw err;
-            }
+              console.log("Works")
+            
         })
     }
+})
 }
 
 
 
 function setEngineer(){
-    inquirer.prompt(engineerPrompt)
+    engineerPrompt().then(function (response) {
 
-    .then(function (response) {
         const newEngineer = new Engineer(response.name, response.id, response.email, response.github);
         newEmployees.push(newEngineer)
-    })
     
-    if (`${response.newmember}` === "Engineer") {
+    if (response.newmember === "Engineer") {
         setEngineer ();
     }
     
-    else if (`${response.newmember}` === "Intern") {
+    else if (response.newmember === "Intern") {
         setIntern ();
     }
 
     else {
         const output = render(employees);
-        fs.writeFile('output/team.html', output, 'utf8', function(err) {
-            if (err) {
+        fs.writeFile('./output/team.html', output, 'utf8', function(err) {
+            if (err) 
               throw err;
-            }
+              console.log("Works")
+            
         })
     }
+})
 }
 
 
 function setManager(){
-    inquirer.prompt(managerPrompt)
-    console.log(managerPrompt)
-
-    .then(function (response) {
+    managerPrompt().then(function (response) {
         const newManager = new Manager(response.name, response.id, response.email, response.officeNumber);
         newEmployees.push(newManager)
-        console.log(newManager)
-    })
+        // console.log(newManager)
     
-    if (`${response.newmember}` === "Engineer") {
+    if (response.newmember === "Engineer") {
         setEngineer ();
     }
     
-    else if (`${response.newmember}` === "Intern") {
+    else if (response.newmember === "Intern") {
         setIntern ();
     }
 
     else {
         const output = render(newEmployees);
-        fs.writeFile('output/team.html', output, 'utf8', function(err) {
-            if (err) {
+        fs.writeFile('./output/team.html', output, 'utf8', function(err) {
+            if (err) 
               throw err;
-            }
+              console.log("Works")
+            
         })
     }
+})
 }
 
 
